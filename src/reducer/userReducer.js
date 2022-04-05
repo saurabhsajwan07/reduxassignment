@@ -1,17 +1,17 @@
-const GET_POST = 'GET_POST';
+const GET_USER_DATA = 'GET_USER_DATA';
 
 const initialState = {
     post: '',
 };
 
-const getPost = (id) => ({
-    type: GET_POST,
+const getUserData = (id) => ({
+    type: GET_USER_DATA,
     id,
 });
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_POST:
+    case GET_USER_DATA:
       return { ...state, post: action.id };
 
     default:
@@ -19,6 +19,6 @@ const userReducer = (state = initialState, action) => {
   }
 };
 
-export { getPost, GET_POST };
+export { getUserData, GET_USER_DATA };
 
 export default userReducer;

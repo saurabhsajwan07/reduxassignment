@@ -1,26 +1,26 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
-import {getPost, GET_POST} from "../reducer/userReducer";
+import {getUserData, GET_USER_DATA} from "../reducer/userReducer";
 import axios from 'axios';
 
-export function requestGetPost(id){
+export function requestUserData(id){
    return axios.request({
      method: 'get',
      url: `https://swapi.dev/api/planets/${id}`,
-   });
+   })
  }
  
- function* handleGetPost(action) {
+ function* handleUserData(action) {
    try {
-      const responsePromise = yield call(requestGetPost, action.id);
+      const responsePromise = yield call(requestUserData, action.id);
       const response = yield responsePromise;
-      yield put(getPost(response));
+      yield put(getUserData(response));
    } catch (error) {
      console.log(error);
    }
  }
  
 function* userSaga() {
-   yield takeLatest(GET_POST, handleGetPost);
+   yield takeLatest(GET_USER_DATA, handleUserData);
  }
 
  export default userSaga;

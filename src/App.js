@@ -1,19 +1,28 @@
 import './App.css';
-import React,{ useRef, useState} from "react";
-import { useDispatch, useSelector} from 'react-redux';
-import {getPost} from "./reducer/userReducer";
+import React,{ useEffect, useRef, useState} from "react";
+import { connect, useDispatch, useSelector} from 'react-redux';
+import {getUserData} from "./reducer/userReducer";
 
-function App({store}) {
+function App(props) {
+  const [storeData, setStoreData] = useState();
   const idRef = useRef(null);
   const dispatch = useDispatch();
   const data= useSelector((state)=>state);
 
+  useEffect(()=>{
+    if(props.user && props.user.data) {
+      setStoreData(props.user.data)
+    }
+   },[props.user])
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(getPost(idRef.current.value));
+    dispatch(getUserData(idRef.current.value));
   };
 
-  console.log(data.post.data);
+  console.log(props.user.data);
+  console.log("storeData", storeData);
+  
 
   return (
     <>
@@ -21,27 +30,26 @@ function App({store}) {
       <button type='submit' onClick={handleSubmit}>
         Submit
       </button>
-{/*     
+    
       <div>
-        {
-         data.map((item)=>{
-         return( 
-           <>
-            <p>{item.name}</p>
-            <p>{item.rotation_period}</p>
-            <p>{item.orbital_period}</p>
-            <p>{item.diameter}</p>
-            <p>{item.climate}</p>
-            <p>{item.gravity}</p>
-            <p>{item.population}</p>
-            <p>{item.terrain}</p>
-            </>
-          )
-         })
-        }
-      </div> */}
+        <h2>Data in {storeData?.name}</h2>
+        <p>{storeData?.rotation_period}</p>
+        <p>{storeData?.orbital_period}</p>
+        <p>{storeData?.diameter}</p>
+        <p>{storeData?.climate}</p>
+        <p>{storeData?.gravity}</p>
+        <p>{storeData?.population}</p>
+        <p>{storeData?.terrain}</p>
+      </div>
+
     </>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    user: state.post
+  }
+}
+
+export default connect(mapStateToProps, null)(App);
